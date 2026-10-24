@@ -1,0 +1,13 @@
+{
+  "name": "volumle",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A little water. A little intuition. A 15-second volume guessing game.",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test": "node --test --test-isolation=none server.test.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

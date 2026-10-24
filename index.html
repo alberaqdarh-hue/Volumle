@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#edf8ff" />
+  <meta name="description" content="Guess the water in a one-liter cup. Fifteen seconds, one guess." />
+  <title>Volumle — Guess the pour</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script>try{const s=JSON.parse(localStorage.getItem('volumle.settings.v1'));if(s?.theme==='dark')document.documentElement.dataset.theme='dark'}catch{}</script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2.5S5 10.1 5 14.7a7 7 0 0 0 14 0C19 10.1 12 2.5 12 2.5Z"/><path d="M8.5 14.5a3.5 3.5 0 0 0 3.5 3.7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2M9 1.5h6"/></symbol>
+    <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 2.5 7M3 5v6h6m3-4v5l3 2"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.8 7.2L22 12l-7.2 2.8L12 22l-2.8-7.2L2 12l7.2-2.8L12 2Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 3h10v5a5 5 0 0 1-10 0V3Zm0 2H3v3a4 4 0 0 0 5 3m9-6h4v3a4 4 0 0 1-5 3m-4 2v6m-4 2h8m-10 0h12"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="m9.5 3-.7 2.4-2 .9-2.3-.6L2 10l1.8 1.8v2.4L2 16l2.5 4.3 2.3-.6 2 .9.7 2.4h5l.7-2.4 2-.9 2.3.6L22 16l-1.8-1.8v-2.4L22 10l-2.5-4.3-2.3.6-2-.9-.7-2.4z" transform="translate(2 0) scale(.83)"/><circle cx="12" cy="11" r="3"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14a9 9 0 0 1-11-11 9 9 0 1 0 11 11Z"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3Zm13-1a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-muted" viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3Zm13 0 5 6m-5 0 5-6"/></symbol>
+  </svg>
+  <div class="water-background" aria-hidden="true"><span class="background-bubble bubble-a"></span><span class="background-bubble bubble-b"></span><span class="background-bubble bubble-c"></span><span class="background-bubble bubble-d"></span><svg viewBox="0 0 1440 240" preserveAspectRatio="none"><path class="back-wave" d="M0 140Q180 40 360 130T720 120T1080 140T1440 95V240H0Z"/><path class="front-wave" d="M0 175Q200 100 400 180T800 170T1200 180T1600 160V240H0Z"/></svg></div>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Volumle home"><span class="brand-mark"><svg><use href="#i-drop"/></svg></span><span>volumle<span class="brand-period">.</span></span></a>
+    <nav aria-label="Game tools">
+      <button class="icon-button" id="history-nav" type="button" title="Your history" aria-label="Your history"><svg class="icon"><use href="#i-history"/></svg><span class="nav-count" id="history-count" hidden>0</span></button>
+      <button class="icon-button" id="board-button" type="button" title="Leaderboard" aria-label="Leaderboard"><svg class="icon"><use href="#i-trophy"/></svg></button>
+      <button class="icon-button" id="how-nav" type="button" title="How to play" aria-label="How to play"><svg class="icon"><use href="#i-info"/></svg></button>
+      <span class="nav-divider"></span>
+      <button class="icon-button settings-button" id="settings-button" type="button" title="Settings" aria-label="Settings"><svg class="icon"><use href="#i-settings"/></svg></button>
+    </nav>
+  </header>
+  <main>
+    <h1 class="visually-hidden">Guess the water in the one-liter cup</h1>
+    <section class="game-card" aria-label="Water volume guessing game">
+      <div class="pour-stage" id="pour-stage"><div class="cup-scene">
+        <div class="scene-glow"></div><span class="scene-bubble scene-bubble-one"></span><span class="scene-bubble scene-bubble-two"></span><span class="scene-bubble scene-bubble-three"></span><span class="scene-spark spark-one">✧</span><span class="scene-spark spark-two">✦</span>
+        <svg class="cup-art" viewBox="45 -55 390 475" role="img" aria-labelledby="cup-title" id="cup-svg">
+          <title id="cup-title">A one-liter cup, ready for your next pour</title>
+          <defs>
+            <linearGradient id="glassBody" x1="0" x2="1"><stop stop-color="#edfaff" stop-opacity=".9"/><stop offset=".4" stop-color="#bce8ff" stop-opacity=".2"/><stop offset="1" stop-color="#d5f3ff" stop-opacity=".8"/></linearGradient>
+            <linearGradient id="waterBody" x1="0" y1="0" x2=".5" y2="1"><stop stop-color="#62d6ff"/><stop offset=".55" stop-color="#38b5f7"/><stop offset="1" stop-color="#1689e5"/></linearGradient>
+            <linearGradient id="waterTop" x1="0" x2="1"><stop stop-color="#a4efff"/><stop offset="1" stop-color="#62ceff"/></linearGradient>
+            <linearGradient id="streamGradient" gradientUnits="userSpaceOnUse" x1="232" y1="0" x2="248" y2="0"><stop stop-color="#39b9fb"/><stop offset=".45" stop-color="#9ae9ff"/><stop offset="1" stop-color="#4fc9ff"/></linearGradient>
+            <radialGradient id="shadowGradient"><stop stop-color="#248aca" stop-opacity=".23"/><stop offset="1" stop-color="#248aca" stop-opacity="0"/></radialGradient>
+            <clipPath id="cupClip"><path d="M133 100Q240 73 347 100L320 355Q240 385 160 355Z"/></clipPath>
+          </defs>
+          <ellipse cx="240" cy="390" rx="140" ry="22" fill="url(#shadowGradient)"/>
+          <path class="glass-body" d="M130 100 157 357Q240 391 323 357L350 100" fill="url(#glassBody)" stroke="#68b6e4" stroke-width="5" stroke-linejoin="round"/>
+          <ellipse class="glass-opening" cx="240" cy="100" rx="110" ry="25" fill="#eaf8ff" fill-opacity=".7" stroke="#68b6e4" stroke-width="4"/>
+          <g clip-path="url(#cupClip)"><g id="water-layer"><path id="water-body" d="M110 225H370V385H110Z" fill="url(#waterBody)"/><ellipse id="water-surface" cx="240" cy="225" rx="97" ry="21" fill="url(#waterTop)" stroke="#ccf6ff" stroke-width="2.5"/><ellipse class="water-ripple" id="water-ripple" cx="240" cy="225" rx="46" ry="10" fill="none" stroke="#efffff" stroke-opacity=".7" stroke-width="2"/><path d="m171 247 9 86" fill="none" stroke="#ddf9ff" stroke-opacity=".2" stroke-width="10" stroke-linecap="round"/><circle class="bubble bubble-one" cx="279" cy="316" r="6"/><circle class="bubble bubble-two" cx="199" cy="280" r="4"/><circle class="bubble bubble-three" cx="289" cy="259" r="3"/></g></g>
+          <path d="m145 128 20 211" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="7" stroke-linecap="round"/><path d="m335 133-20 197" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="4" stroke-linecap="round"/><path d="M158 357Q240 389 322 357" fill="none" stroke="#68b6e4" stroke-width="4"/><ellipse cx="240" cy="100" rx="110" ry="25" fill="none" stroke="#68b6e4" stroke-width="4"/><path d="M139 91Q239 59 341 91" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+          <g id="pour-stream" opacity="0"><path id="stream-line" d="M240-65V225" stroke="url(#streamGradient)" stroke-width="14" stroke-linecap="round"/><path class="stream-shine" id="stream-shine" d="M238-65V225" stroke="#d9faff" stroke-width="3" stroke-dasharray="15 28" stroke-linecap="round"/><g id="splash-group"><ellipse id="splash-ring" cx="240" cy="225" rx="23" ry="6" fill="none" stroke="#efffff" stroke-width="3"/><path class="splash splash-left" d="m230 0-14-17-5 8"/><path class="splash splash-right" d="m250 0 13-20 7 7"/><circle class="splash-drop drop-left" cx="211" cy="-22" r="4"/><circle class="splash-drop drop-right" cx="270" cy="-26" r="3"/></g></g>
+        </svg>
+        <span class="capacity-label">1 <span>L</span></span><div class="reveal-tag" id="reveal-tag" hidden><strong id="reveal-volume">500 <small>ml</small></strong></div>
+      </div></div>
+      <div class="game-panel"><div id="play-panel">
+        <div class="visually-hidden" id="round-status" aria-live="polite">Ready to pour</div>
+        <div class="controls-top"><label class="field-label" for="guess-input">Your guess</label><div class="timer-block"><svg class="icon small"><use href="#i-clock"/></svg><span class="timer-number"><span id="timer-value">15</span><small>s</small></span><span class="visually-hidden" id="timer-label">Time remaining</span></div></div>
+        <div class="timer-track" role="progressbar" aria-label="Time remaining" aria-valuemin="0" aria-valuemax="15" aria-valuenow="15" id="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
+        <form id="guess-form" novalidate><div class="guess-row"><div class="estimate-field"><input type="number" id="guess-input" name="guess" min="0.1" max="1000" step="any" inputmode="decimal" placeholder="0" autocomplete="off" disabled aria-describedby="form-error"/><span>ml</span></div><button class="primary-button" id="main-button" type="submit"><svg class="icon drop-icon"><use href="#i-drop"/></svg><span id="main-button-label">Start pouring</span><svg class="icon button-arrow"><use href="#i-arrow"/></svg></button></div><p class="form-error" id="form-error" role="alert" hidden></p></form>
+      </div><div id="result-panel" hidden aria-live="polite"></div></div>
+    </section>
+  </main>
+  <dialog id="history-dialog" class="wide-dialog" aria-labelledby="history-title"><div class="dialog-header"><h2 id="history-title">Your history</h2><button class="close-button" data-close type="button" aria-label="Close history"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="stats-grid"><div class="stat-card"><span>Rounds played</span><strong id="rounds-stat">0</strong></div><div class="stat-card"><span>Best error</span><strong id="best-stat">—</strong></div><div class="stat-card"><span>Average error</span><strong id="average-stat">—</strong></div></div><div id="history-content"></div></dialog>
+  <dialog id="board-dialog" class="wide-dialog" aria-labelledby="board-title"><div class="dialog-header"><h2 id="board-title">Leaderboard</h2><button class="close-button" data-close type="button" aria-label="Close leaderboard"><svg class="icon"><use href="#i-close"/></svg></button></div><p class="dialog-description">Each player's best guess. Lowest error wins.</p><div id="board-content"></div></dialog>
+  <dialog id="how-dialog" aria-labelledby="how-title"><div class="dialog-header"><h2 id="how-title">How to play</h2><button class="close-button" data-close type="button" aria-label="Close instructions"><svg class="icon"><use href="#i-close"/></svg></button></div><ol class="how-instructions"><li>Start the pour and watch a <strong>1-liter cup</strong> fill.</li><li>When the water stops, enter your guess in ml. You have <strong>15 seconds</strong>. Press Enter or lock it in.</li><li>See the actual amount and your percentage error. Every guess is saved to your history.</li></ol><div class="accuracy-legend"><span>0–5% · Spot on</span><span>Over 5–20% · Getting there</span><span>Over 20% · Keep practicing</span></div><p class="dialog-description">Error = |guess − actual| ÷ actual × 100.</p></dialog>
+  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-header"><h2 id="settings-title">Settings</h2><button class="close-button" data-close type="button" aria-label="Close settings"><svg class="icon"><use href="#i-close"/></svg></button></div><section class="settings-section" aria-labelledby="appearance-title"><h3 id="appearance-title">Appearance</h3><div class="theme-options" role="group" aria-label="Color theme"><button class="theme-option" id="light-theme" type="button" aria-pressed="true"><svg class="icon"><use href="#i-sun"/></svg>Light</button><button class="theme-option" id="dark-theme" type="button" aria-pressed="false"><svg class="icon"><use href="#i-moon"/></svg>Dark</button></div></section><section class="settings-section" aria-labelledby="sound-title"><div class="setting-label"><h3 id="sound-title">Water sounds</h3><output id="volume-output" for="volume-input">65%</output></div><div class="volume-row"><button class="icon-button" id="mute-button" type="button" aria-label="Mute water sounds" aria-pressed="false"><svg class="icon"><use id="volume-icon" href="#i-volume"/></svg></button><input id="volume-input" type="range" min="0" max="100" value="65" step="1" aria-label="Water sound volume"/></div><button class="text-button" id="test-sound" type="button"><svg class="icon small"><use href="#i-volume"/></svg>Test water sound</button></section><section class="settings-section"><form id="profile-form"><label class="field-label" for="name-input">Player name</label><div class="name-row"><input class="name-input" id="name-input" type="text" maxlength="24" placeholder="Your nickname" autocomplete="nickname" required/><button class="small-button" type="submit">Save</button></div></form></section></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
